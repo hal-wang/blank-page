@@ -33,21 +33,6 @@
         line-height: 2.2rem;
         margin-block-start: 0;
       }
-      p {
-        font-size: 1.6rem;
-        line-height: 2.6rem;
-        font-weight: lighter;
-        margin-block-start: 0.6em;
-        margin-block-end: 0.6em;
-      }
-
-      p a {
-        text-decoration: none;
-        color: #121314;
-        position: relative;
-        cursor: pointer;
-        border-bottom: 2px solid #121314;
-      }
 
       @media screen and (orientation: portrait) {
         .container .logo {
@@ -69,8 +54,8 @@
         bottom: 0;
         left: 0;
         right: 0;
-        background: #eee;
-        border-top: 1px solid #ddd;
+        background: #f2f2f2;
+        border-top: 1px solid #eee;
         height: 50px;
         display: flex;
         justify-content: center;
@@ -79,9 +64,20 @@
       }
 
       .bottom a {
-        color: #121314;
         cursor: pointer;
         border-bottom: 0;
+        display: inline-block;
+        text-decoration: none;
+        height: 20px;
+        line-height: 20px;
+      }
+
+      .bottom a p {
+        float: left;
+        height: 20px;
+        line-height: 20px;
+        margin: 0px 0px 0px 5px;
+        color: #939393;
       }
     </style>
   </head>
@@ -90,9 +86,18 @@
       <img class="logo" src="https://blog.hal.wang/imgs/h/h_mini.png" alt="" />
       <h1>Hello.</h1>
       <h2>There's nothing here.</h2>
+
       <div class="bottom">
+        <a
+          target="_blank"
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34122602000299"
+        >
+          <img src="http://www.beian.gov.cn/img/ghs.png" style="float: left" />
+          <p>皖公网安备 34122602000299号</p>
+        </a>
+        <p style="margin: 0 10px">|</p>
         <a href="https://beian.miit.gov.cn" target="_blank">
-          京ICP备19029465号-5
+          <p>京ICP备19029465号-5</p>
         </a>
       </div>
     </div>
