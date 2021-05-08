@@ -5,12 +5,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hal-wang/blank-page.git"
+    "url": "https://github.com/hal-wang/blank-page.git"
   },
   "author": "hal-wang",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/hal-wang/blank-page/issues"
   },
-  "homepage": "https://blank.hal.wang"
+  "homepage": "http://blank.hal.wang"
 }
