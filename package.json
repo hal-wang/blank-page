@@ -1,0 +1,16 @@
+{
+  "name": "blank-page",
+  "scripts": {
+    "deploy": "tcb login && tcb hosting deploy ./src -e blank-0gzn10hrce9ed9f6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hal-wang/blank-page.git"
+  },
+  "author": "hal-wang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hal-wang/blank-page/issues"
+  },
+  "homepage": "https://blank.hal.wang"
+}
