@@ -1,7 +1,7 @@
 {
   "name": "blank-page",
   "scripts": {
-    "deploy": "tcb login && tcb hosting deploy ./src -e blank-0gzn10hrce9ed9f6"
+    "deploy": "tcb login && tcb framework deploy"
   },
   "repository": {
     "type": "git",
@@ -12,5 +12,8 @@
   "bugs": {
     "url": "https://github.com/hal-wang/blank-page/issues"
   },
-  "homepage": "http://blank.hal.wang"
+  "homepage": "http://blank.hal.wang",
+  "dependencies": {
+    "@hal-wang/funceb": "^1.0.2-beta.1"
+  }
 }
