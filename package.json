@@ -14,6 +14,7 @@
   },
   "homepage": "http://blank.hal.wang",
   "dependencies": {
-    "@hal-wang/funceb": "^1.0.2"
+    "@sfajs/cloudbase": "^0.1.0",
+    "@sfajs/static": "^0.1.4"
   }
 }

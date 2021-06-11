@@ -1,13 +1,25 @@
-const Funceb = require("@hal-wang/funceb").default;
-const fs = require("fs");
+"use strict";
+require("@sfajs/static");
+const SfaCloudbase = require("@sfajs/cloudbase").default;
 
-exports.main = async (event) => {
-  const funceb = new Funceb(event.path, "web", "base64");
-
-  return {
-    isBase64Encoded: true,
-    statusCode: funceb.status,
-    headers: { "Content-Type": funceb.mine },
-    body: funceb.content,
-  };
+exports.main = async (event, context) => {
+  return await new SfaCloudbase(event, context)
+    .use(async (ctx, next) => {
+      await next();
+      if (!!ctx.bag("STATIC_FILE")) {
+        ctx.res.isBase64Encoded = true;
+      }
+    })
+    .use(async (ctx, next) => {
+      if (ctx.req.path != "") {
+        ctx.req.setPath("");
+      }
+      await next();
+    })
+    .useStatic({
+      dir: "web",
+      encoding: "base64",
+      method: "ANY",
+    })
+    .run();
 };
