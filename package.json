@@ -14,7 +14,7 @@
   },
   "homepage": "http://blank.hal.wang",
   "dependencies": {
-    "@sfajs/cloudbase": "^0.1.0",
-    "@sfajs/static": "^0.1.4"
+    "@sfajs/cloudbase": "^0.3.0",
+    "@sfajs/static": "^0.3.0"
   }
 }
