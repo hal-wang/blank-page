@@ -1,7 +1,7 @@
 {
   "name": "blank-page",
   "scripts": {
-    "deploy": "tcb login && tcb framework deploy"
+    "deploy": "tcb login && tcb hosting deploy ./src/ -e tools-2gx5to26e9d0252a"
   },
   "repository": {
     "type": "git",
@@ -12,9 +12,5 @@
   "bugs": {
     "url": "https://github.com/hal-wang/blank-page/issues"
   },
-  "homepage": "http://blank.hal.wang",
-  "dependencies": {
-    "@sfajs/cloudbase": "^0.3.0",
-    "@sfajs/static": "^0.3.0"
-  }
+  "homepage": "http://blank.hal.wang"
 }
