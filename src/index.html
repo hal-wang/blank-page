@@ -1,100 +1,167 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <link id="favicon" rel="shortcut icon" href="./avatar.ico" />
-    <title>我的初心日记</title>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H</title>
+<link rel="icon" href="./favicon.ico">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: sans-serif;
+    transition: background 0.5s ease;
+  }
+  /* 浏览器浅色主题 */
+  body { background: linear-gradient(135deg, #e3f2fd 0%, #c5cae9 100%); }
+  /* 浏览器深色主题 */
+  @media (prefers-color-scheme: dark) {
+    body { background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%); }
+  }
+  .stage {
+    width: min(80vw, 80vh);
+    height: min(80vw, 80vh);
+    position: relative;
+    /* 给底部备案号留出空间 */
+    margin-bottom: 4vh;
+  }
+  svg { width: 100%; height: 100%; display: block; }
 
-    <style type="text/css">
-      .container {
-        max-width: 740px;
-        margin: 0 auto;
-        padding: 2rem 2.5rem;
-        display: flex;
-        flex-direction: column;
-      }
+  /* 底部备案号 */
+  .bottom {
+    position: fixed;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #6b7a8f;
+  }
+  @media (prefers-color-scheme: dark) {
+    .bottom { color: #8a97a8; }
+  }
+  .bottom a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .bottom a:hover { color: #1976d2; }
+  @media (prefers-color-scheme: dark) {
+    .bottom a:hover { color: #42a5f5; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <!-- 阴影 -->
+    <g opacity="0.18">
+      <rect x="52" y="34" width="80" height="332" rx="36" fill="#888"/>
+      <rect x="268" y="34" width="80" height="332" rx="36" fill="#888"/>
+      <rect x="52" y="160" width="296" height="80" rx="36" fill="#888"/>
+    </g>
+    <!-- 左竖 -->
+    <rect x="48" y="28" width="80" height="332" rx="36" fill="#1976d2"/>
+    <!-- 右竖 -->
+    <rect x="272" y="28" width="80" height="332" rx="36" fill="#1976d2"/>
+    <!-- 横杠（脸） -->
+    <rect x="48" y="156" width="304" height="88" rx="40" fill="#42a5f5"/>
+    <!-- 高光 -->
+    <rect x="56" y="36" width="20" height="180" rx="10" fill="#ffffff" opacity="0.3"/>
+    <rect x="280" y="36" width="20" height="180" rx="10" fill="#ffffff" opacity="0.3"/>
 
-      .container .logo {
-        align-self: center;
-        width: 16rem;
-        height: 16rem;
-      }
+    <!-- 左眼眼白 -->
+    <circle cx="150" cy="200" r="26" fill="#ffffff"/>
+    <!-- 右眼眼白 -->
+    <circle cx="250" cy="200" r="26" fill="#ffffff"/>
 
-      h1 {
-        font-size: 4.5rem;
-        line-height: 4.5rem;
-      }
-      h2 {
-        font-size: 2.2rem;
-        line-height: 2.2rem;
-        margin-block-start: 0;
-      }
+    <!-- 左眼瞳孔组（整体移动） -->
+    <g id="leftEye">
+      <circle cx="150" cy="200" r="12" fill="#2c2c2c"/>
+      <circle cx="146" cy="196" r="4" fill="#ffffff"/>
+    </g>
+    <!-- 右眼瞳孔组（整体移动） -->
+    <g id="rightEye">
+      <circle cx="250" cy="200" r="12" fill="#2c2c2c"/>
+      <circle cx="246" cy="196" r="4" fill="#ffffff"/>
+    </g>
+  </svg>
+</div>
 
-      @media screen and (orientation: portrait) {
-        .container .logo {
-          width: 70vw !important;
-          height: 70vw !important;
-          max-width: 20rem;
-          max-height: 20rem;
-        }
-      }
+<!-- 底部备案号 -->
+<div class="bottom">
+  <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34122602000299">
+    <p>皖公网安备 34122602000299号</p>
+  </a>
+  <p style="margin: 0 10px">|</p>
+  <a href="https://beian.miit.gov.cn" target="_blank">
+    <p>京ICP备19029465号-5</p>
+  </a>
+</div>
 
-      @media (max-width: 959px) {
-        .container {
-          padding: 2rem;
-        }
-      }
+<script>
+  const stage = document.querySelector('.stage');
+  const eyes = [
+    { cx: 150, cy: 200, el: document.getElementById('leftEye') },
+    { cx: 250, cy: 200, el: document.getElementById('rightEye') }
+  ];
 
-      .bottom {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: #f2f2f2;
-        border-top: 1px solid #eee;
-        height: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 14px;
-      }
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let stageRect = stage.getBoundingClientRect();
+  let rafId = null;
 
-      .bottom a {
-        cursor: pointer;
-        border-bottom: 0;
-        display: inline-block;
-        text-decoration: none;
-        height: 20px;
-        line-height: 20px;
-      }
+  window.addEventListener('resize', () => {
+    stageRect = stage.getBoundingClientRect();
+  });
 
-      .bottom a p {
-        float: left;
-        height: 20px;
-        line-height: 20px;
-        margin: 0px 0px 0px 5px;
-        color: #939393;
-      }
-    </style>
-  </head>
+  function updateEyes() {
+    rafId = null;
+    const scale = 400 / stageRect.width;
+    const mx = (mouseX - stageRect.left) * scale;
+    const my = (mouseY - stageRect.top) * scale;
 
-  <body>
-    <div class="container">
-      <h1>Hello.</h1>
-      <h2>There's nothing here.</h2>
+    eyes.forEach(eye => {
+      const dx = mx - eye.cx;
+      const dy = my - eye.cy;
+      const angle = Math.atan2(dy, dx);
+      const maxOffset = 12;
+      const dist = Math.min(maxOffset, Math.hypot(dx, dy) / 6);
+      const ox = Math.cos(angle) * dist;
+      const oy = Math.sin(angle) * dist;
+      eye.el.setAttribute('transform', `translate(${ox} ${oy})`);
+    });
+  }
 
-      <div class="bottom">
-        <a
-          target="_blank"
-          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34122602000299"
-        >
-          <p>皖公网安备 34122602000299号</p>
-        </a>
-        <p style="margin: 0 10px">|</p>
-        <a href="https://beian.miit.gov.cn" target="_blank">
-          <p>京ICP备19029465号-5</p>
-        </a>
-      </div>
-    </div>
-  </body>
+  function scheduleUpdate() {
+    if (rafId === null) {
+      rafId = requestAnimationFrame(updateEyes);
+    }
+  }
+
+  window.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    scheduleUpdate();
+  });
+
+  window.addEventListener('touchmove', e => {
+    if (e.touches[0]) {
+      mouseX = e.touches[0].clientX;
+      mouseY = e.touches[0].clientY;
+      scheduleUpdate();
+    }
+  }, { passive: true });
+
+  // 初始看向屏幕中心
+  updateEyes();
+</script>
+</body>
 </html>
