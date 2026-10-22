@@ -4,8 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>签名计算工具</title>
-    <!-- CDN 依赖 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <style>
       * {
         box-sizing: border-box;
@@ -116,9 +114,7 @@
     </div>
 
     <script>
-      // 页面加载时自动初始化
       window.onload = function () {
-        // 从 URL 获取密钥
         const params = new URLSearchParams(window.location.search);
         const secretKey = params.get("sk") || "";
         document.getElementById("secretKey").innerText = secretKey;
@@ -150,27 +146,44 @@
         buffer[offset + 2] = (value >> 16) & 0xff;
       }
 
-      function packBinary(startDays, days, secretKey, deviceHash) {
+      async function hmacSha256Hex(message, key) {
+        const enc = new TextEncoder();
+        const cryptoKey = await crypto.subtle.importKey(
+          "raw",
+          enc.encode(key),
+          { name: "HMAC", hash: "SHA-256" },
+          false,
+          ["sign"],
+        );
+        const sig = await crypto.subtle.sign(
+          "HMAC",
+          cryptoKey,
+          enc.encode(message),
+        );
+        return Array.from(new Uint8Array(sig))
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+      }
+
+      async function packBinary(startDays, days, secretKey, deviceHash) {
         const payload = startDays + "|" + days + "|" + deviceHash;
-        const hmac = CryptoJS.HmacSHA256(payload, secretKey);
-        const hmacBytes = CryptoJS.enc.Hex.parse(hmac.toString())
-          .words.flatMap((w) => [
-            (w >>> 24) & 0xff,
-            (w >>> 16) & 0xff,
-            (w >>> 8) & 0xff,
-            w & 0xff,
-          ])
-          .slice(0, 16);
+
+        const hmacHex = await hmacSha256Hex(payload, secretKey);
+        const hmacBytes = [];
+        for (let i = 0; i < 32; i += 2) {
+          hmacBytes.push(parseInt(hmacHex.substr(i, 2), 16));
+        }
+        const truncated = hmacBytes.slice(0, 16);
 
         const buffer = new Uint8Array(22);
-        buffer.set(hmacBytes, 0);
+        buffer.set(truncated, 0);
         writeUint24(buffer, 16, startDays);
         writeUint24(buffer, 19, days);
 
         return buffer;
       }
 
-      function calculate() {
+      async function calculate() {
         const secretKey = document.getElementById("secretKey").innerText.trim();
         const startDate = document.getElementById("startDate").value.trim();
         const endDate = document.getElementById("endDate").value.trim();
@@ -184,7 +197,7 @@
         const startDays = dateToDays(startDate);
         const days = dateToDays(endDate) - startDays;
 
-        const binary = packBinary(startDays, days, secretKey, deviceId);
+        const binary = await packBinary(startDays, days, secretKey, deviceId);
         const result = uint8ArrayToBase58(binary);
 
         document.getElementById("result").innerText = result;
@@ -206,9 +219,8 @@
         return s;
       }
 
-      // 复制结果：没计算则自动先计算
-      function copyResult() {
-        const success = calculate();
+      async function copyResult() {
+        const success = await calculate();
         if (!success) return;
 
         let res = document.getElementById("result").innerText;
